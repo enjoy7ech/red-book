@@ -19,6 +19,11 @@ export function validateImport(value: unknown, existing: { knowledge: Knowledge[
  for (const k of notes as Record<string,unknown>[]) { if (!k || typeof k !== 'object') throw new Error('知识格式错误。'); checkId(k); if (!subjects.includes(k.subject as string) || ![k.title,k.chapter,k.summary,k.tip].every(text) || !Array.isArray(k.points) || !k.points.length || !k.points.every(text) || !Array.isArray(k.tags) || !k.tags.every(text) || !Number.isFinite(k.minutes) || Number(k.minutes)<=0 || !sourceIds.has(k.sourceId as string)) throw new Error('知识字段不完整，或科目、来源、学习时长无效。'); }
  const allNotes = [...existing.knowledge,...notes as Knowledge[]];
  for (const q of qs as Record<string,unknown>[]) { if (!q || typeof q !== 'object') throw new Error('题目格式错误。'); checkId(q); const note = allNotes.find(k=>k.id===q.knowledgeId); if (!text(q.title) || !text(q.explanation) || !text(q.origin) || !Array.isArray(q.options) || q.options.length<2 || q.options.length>6 || !q.options.every(text) || !Array.isArray(q.answer) || q.answer.length<1 || new Set(q.answer).size!==q.answer.length || !q.answer.every(i=>Number.isInteger(i)&&i>=0&&i<(q.options as unknown[]).length) || !['single','multiple'].includes(q.type as string) || (q.type==='single'&&q.answer.length!==1) || (q.type==='multiple'&&q.answer.length<2) || !note || note.subject!==q.subject || !sourceIds.has(q.sourceId as string)) throw new Error('题目字段、答案索引、关联知识或来源无效。'); }
+ for(const q of qs as Record<string,unknown>[]){
+  if(q.year!==undefined&&(!Number.isInteger(q.year)||Number(q.year)<1980||Number(q.year)>2099))throw new Error('试题年份无效。');
+  if(q.paperId!==undefined&&(!text(q.paperId)||q.year===undefined))throw new Error('试卷关联需包含年份及有效编号。');
+  if(q.sourceRef!==undefined&&!text(q.sourceRef))throw new Error('原题定位无效。');
+ }
  if (!(notes as unknown[]).length && !(qs as unknown[]).length && !(refs as unknown[]).length) throw new Error('资料包为空。');
  return {knowledge:notes as Knowledge[],questions:qs as Question[],sources:refs as Source[]};
 }

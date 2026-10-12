@@ -3,7 +3,17 @@ import assert from 'node:assert/strict';
 import { sameAnswers, latestMistakes, validateImport, localDate } from '../src/domain.ts';
 import { knowledge, questions, sources } from '../src/data.ts';
 import { drugProfiles } from '../src/drugs.ts';
+import {pastPapers,pastQuestions} from '../src/pastData.ts';
 const existing={knowledge,questions,sources};
+test('历年选题保留来源定位、年份及科目，不将未接入全卷标作整卷题量',()=>{
+ assert.deepEqual([...new Set(pastPapers.map(p=>p.year))].sort(),[2023,2024,2025]);
+ for(const p of pastPapers){
+  const qs=pastQuestions.filter(q=>q.paperId===p.id);
+  assert.equal(qs.length,p.selectedCount);
+  assert.ok(qs.length>0);
+  for(const q of qs){assert.equal(q.year,p.year);assert.equal(q.subject,p.subject);assert.ok(q.sourceRef);assert.match(q.origin,/改写/);}
+ }
+});
 test('多选必须完整且正确，不受选项顺序影响',()=>{
  assert.equal(sameAnswers([2,0,1],[0,1,2]),true);
  assert.equal(sameAnswers([0,1],[0,1,2]),false);
