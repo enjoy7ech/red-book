@@ -13,30 +13,46 @@ export function videoNameFromId(id) {
 export function proxyVideoUrl(source, root, name, sign) {
   return `${source}/p${`${root}/${name}`.split('/').map(encodeURIComponent).join('/')}?${new URLSearchParams({ sign })}`;
 }
+export function courseForSubject(config, subject) {
+  const course = config.courses?.find(c => c.id === subject);
+  if (!course || !['zy1', 'zy2', 'zh', 'fg'].includes(subject) || !course.path.startsWith('/') || course.path.split('/').some(p => p === '..' || p === '.') || course.path.includes('\\')) throw new Error('Invalid subject');
+  return course;
+}
 export async function startCloudVideoServer(runtimeDir) {
   const config = JSON.parse(await readFile(path.join(runtimeDir, 'site-video-config.json'), 'utf8'));
   const source = 'http://127.0.0.1:5244';
   if (config.source !== source || !config.root.startsWith('/quark-video/') || config.root.includes('/../')) throw new Error('Invalid local video configuration');
   const root = config.root.replace(/\/$/, '');
-  async function api(endpoint, body) {
-    const auth = JSON.parse(await readFile(path.join(runtimeDir, 'local-auth.json'), 'utf8'));
-    const response = await fetch(`${source}${endpoint}`, { method: 'POST', redirect: 'error', headers: { 'Content-Type': 'application/json', Authorization: auth.token }, body: JSON.stringify(body), signal: AbortSignal.timeout(20000) });
+  let token;
+  async function api(endpoint, body, retried = false) {
+    if (!token) {
+      const account = JSON.parse(await readFile(path.join(runtimeDir, 'webdav-account.json'), 'utf8'));
+      const login = await fetch(`${source}/api/auth/login`, { method: 'POST', redirect: 'error', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ username: account.username, password: account.password }), signal: AbortSignal.timeout(10000) });
+      const result = await login.json();
+      if (result.code !== 200) throw new Error('Local course login unavailable');
+      token = result.data.token;
+    }
+    const response = await fetch(`${source}${endpoint}`, { method: 'POST', redirect: 'error', headers: { 'Content-Type': 'application/json', Authorization: token }, body: JSON.stringify(body), signal: AbortSignal.timeout(20000) });
     const result = await response.json();
+    if ((response.status === 401 || result.code === 401) && !retried) { token = undefined; return api(endpoint, body, true); }
     if (!response.ok || result.code !== 200) throw new Error('Cloud storage unavailable');
     return result.data;
   }
-  let cachedCatalog, cachedAt = 0;
-  async function catalog() {
-    if (cachedCatalog && Date.now() - cachedAt < 60000) return cachedCatalog;
+  const cachedCatalogs = new Map();
+  async function catalog(subject) {
+    const course = courseForSubject(config, subject);
+    const cached = cachedCatalogs.get(subject);
+    if (cached && Date.now() - cached.time < 60000) return cached.data;
     const files = [];
     for (let page = 1; page <= 20; page++) {
-      const data = await api('/api/fs/list', { path: root, password: '', page, per_page: 200, refresh: false });
+      const data = await api('/api/fs/list', { path: course.path, password: '', page, per_page: 200, refresh: false });
       files.push(...(data.content || []));
       if (!data.content?.length || files.length >= data.total) break;
     }
     const lessons = files.filter(f => !f.is_dir && /\.(mp4|webm)$/i.test(f.name) && !/[/\\\x00-\x1f]/.test(f.name)).map(f => ({ id: Buffer.from(f.name).toString('base64url'), name: f.name, size: f.size })).sort((a, b) => a.name.localeCompare(b.name, 'zh-CN', { numeric: true }));
-    cachedCatalog = { title: '中药学专业知识（一） · 2025 基础学习', lessons }; cachedAt = Date.now();
-    return cachedCatalog;
+    const data = { subject, title: `${course.title} · 2025 基础学习`, lessons, courses: config.courses.map(c => ({ id: c.id, title: c.title, count: c.id === subject ? lessons.length : cachedCatalogs.get(c.id)?.data.lessons.length ?? c.count })) };
+    cachedCatalogs.set(subject, { time: Date.now(), data });
+    return data;
   }
   const server = http.createServer(async (req, res) => {
     const json = (status, value) => { res.writeHead(status, { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store' }); res.end(JSON.stringify(value)); };
@@ -44,17 +60,20 @@ export async function startCloudVideoServer(runtimeDir) {
     if (!['127.0.0.1:5245', 'localhost:5245'].includes(req.headers.host) || (req.headers.origin && !origins.has(req.headers.origin))) return json(403, { error: 'Forbidden' });
     const url = new URL(req.url, 'http://127.0.0.1:5245');
     if (req.method !== 'GET') return json(405, { error: 'Method not allowed' });
+    const subject = url.searchParams.get('subject') || 'zy1';
+    let course;
+    try { course = courseForSubject(config, subject); } catch { return json(400, { error: 'Invalid subject' }); }
     try {
-      if (url.pathname === '/api/cloud-video/catalog') return json(200, await catalog());
+      if (url.pathname === '/api/cloud-video/catalog') return json(200, await catalog(subject));
       if (url.pathname !== '/api/cloud-video/stream') return json(404, { error: 'Not found' });
       let name;
       try { name = videoNameFromId(url.searchParams.get('id')); } catch { return json(400, { error: 'Invalid video' }); }
-      if (!(await catalog()).lessons.some(l => l.name === name)) return json(404, { error: 'Video not found' });
+      if (!(await catalog(subject)).lessons.some(l => l.name === name)) return json(404, { error: 'Video not found' });
       if (req.headers.range && !/^bytes=\d*-\d*$/.test(req.headers.range)) return json(416, { error: 'Invalid range' });
-      const file = await api('/api/fs/get', { path: `${root}/${name}`, password: '' });
+      const file = await api('/api/fs/get', { path: `${course.path}/${name}`, password: '' });
       const abort = new AbortController(); res.once('close', () => abort.abort());
       const headers = req.headers.range ? { Range: req.headers.range } : {};
-      const upstream = await fetch(proxyVideoUrl(source, root, name, file.sign), { headers, redirect: 'error', signal: abort.signal });
+      const upstream = await fetch(proxyVideoUrl(source, `${root}${course.path}`, name, file.sign), { headers, redirect: 'error', signal: abort.signal });
       if (![200, 206, 416].includes(upstream.status)) throw new Error('Video unavailable');
       const outgoing = { 'Cache-Control': 'no-store' };
       for (const key of ['content-type', 'content-length', 'content-range', 'accept-ranges']) if (upstream.headers.has(key)) outgoing[key] = upstream.headers.get(key);
