@@ -1,0 +1,8 @@
+node_modules/
+dist/
+*.tgz
+*.tar.gz
+.sites-local/
+.openai/local/
+*.tsbuildinfo
+.sites-checkout/
