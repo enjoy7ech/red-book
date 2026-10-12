@@ -7,3 +7,4 @@ dist/
 *.tsbuildinfo
 .sites-checkout/
 public/pdf-assets/
+data/

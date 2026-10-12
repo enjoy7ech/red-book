@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { Button, Empty, Input, Select, Tag, message } from 'antd';
 import { PlayCircleOutlined, ExportOutlined, CheckOutlined, ReadOutlined, EditOutlined, ArrowLeftOutlined, ArrowRightOutlined } from '@ant-design/icons';
 import { subjects } from './data';
-import type { Knowledge } from './data';
+import type { Knowledge, SubjectId } from './data';
 import { videoCourses, videoUrl, playerUrl, durationText } from './videoData';
 import type { VideoCourse } from './videoData';
 import './videos.css';
@@ -12,9 +12,9 @@ type Viewing={completed:string[];last:{courseId:string;page:number}|null};
 const key=(courseId:string,page:number)=>`${courseId}:${page}`;
 function readViewing():Viewing{try{const data=JSON.parse(localStorage.getItem(STORE)||'null');const valid=new Set(videoCourses.flatMap(c=>c.lessons.map(l=>key(c.id,l.page))));return {completed:Array.isArray(data?.completed)?[...new Set<string>(data.completed.filter((id:unknown)=>typeof id==='string'&&valid.has(id)))]:[],last:data?.last&&videoCourses.some(c=>c.id===data.last.courseId&&c.lessons.some(l=>l.page===data.last.page))?data.last:null};}catch{return {completed:[],last:null};}}
 
-export default function VideoLibrary({notes,onKnowledge,onPractice,initialKnowledgeId}:{notes:Knowledge[];onKnowledge:(note:Knowledge)=>void;onPractice:(ids:string[])=>void;initialKnowledgeId?:string}){
+export default function VideoLibrary({notes,onKnowledge,onPractice,initialKnowledgeId,initialSubject='all'}:{notes:Knowledge[];onKnowledge:(note:Knowledge)=>void;onPractice:(ids:string[])=>void;initialKnowledgeId?:string;initialSubject?:SubjectId|'all'}){
  const [viewing,setViewing]=useState<Viewing>(readViewing);
- const [subject,setSubject]=useState(notes.find(k=>k.id===initialKnowledgeId)?.subject??'all');
+ const [subject,setSubject]=useState<string>(notes.find(k=>k.id===initialKnowledgeId)?.subject??initialSubject);
  const [year,setYear]=useState('all');
  const [chapter,setChapter]=useState('all');
  const [search,setSearch]=useState('');
