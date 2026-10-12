@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { sameAnswers, latestMistakes, validateImport, localDate } from '../src/domain.ts';
 import { knowledge, questions, sources } from '../src/data.ts';
+import { drugProfiles } from '../src/drugs.ts';
 const existing={knowledge,questions,sources};
 test('多选必须完整且正确，不受选项顺序影响',()=>{
  assert.equal(sameAnswers([2,0,1],[0,1,2]),true);
@@ -15,7 +16,7 @@ test('最近一次答对移出错题本，再次答错重新进入',()=>{
  assert.deepEqual(latestMistakes([...attempts,{questionId:'q01',correct:false}]).sort(),['q01','q02']);
 });
 test('所有内置资料的关联、来源与答案有效',()=>{
- assert.equal(validateImport(existing,{knowledge:[],questions:[],sources:[]}).questions.length,44);
+ assert.equal(validateImport(existing,{knowledge:[],questions:[],sources:[]}).questions.length,56);
  assert.equal(new Set(knowledge.map(k=>k.subject)).size,4);
  for(const k of knowledge) assert.ok(questions.some(q=>q.knowledgeId===k.id));
 });
@@ -37,4 +38,12 @@ test('同一个资料包支持新来源、知识与题目之间的关联',()=>{
 });
 test('本地学习日期保留用户所在时区的日历日期',()=>{
  assert.equal(localDate(new Date(2026,9,12,0,1)),'2026-10-12');
+});
+test('药材详表均关联有效知识与资料来源，且有主治、配伍及辨析内容',()=>{
+ assert.equal(drugProfiles.length,8);
+ for(const drug of drugProfiles){
+  assert.ok(knowledge.some(k=>k.id===drug.knowledgeId&&k.subject==='zy2'));
+  assert.ok(drug.sourceIds.every(id=>sources.some(s=>s.id===id)));
+  assert.ok(drug.indications.length&&drug.pairs.length&&drug.processing.length&&drug.caution.length&&drug.distinctions.length);
+ }
 });

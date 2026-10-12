@@ -1,0 +1,5 @@
+import type { SubjectId } from './data';
+export type BookRecord={id:SubjectId;title:string;version:string;fileName:string;file:Blob;addedAt:string;page:number;bookmarks:{page:number;note:string}[]};
+function openDb():Promise<IDBDatabase>{return new Promise((resolve,reject)=>{const req=indexedDB.open('bencao-original-books',1);req.onupgradeneeded=()=>req.result.createObjectStore('books',{keyPath:'id'});req.onsuccess=()=>resolve(req.result);req.onerror=()=>reject(new Error('无法打开原书存储，请检查浏览器隐私模式或存储权限。'));});}
+export async function getBooks():Promise<BookRecord[]>{const db=await openDb();try{return await new Promise((resolve,reject)=>{const req=db.transaction('books','readonly').objectStore('books').getAll();req.onsuccess=()=>resolve(req.result);req.onerror=()=>reject(req.error);});}finally{db.close();}}
+export async function saveBook(book:BookRecord){const db=await openDb();try{await new Promise<void>((resolve,reject)=>{const tx=db.transaction('books','readwrite');tx.objectStore('books').put(book);tx.oncomplete=()=>resolve();tx.onerror=()=>reject(new Error('原书保存失败，浏览器存储空间可能不足。'));tx.onabort=()=>reject(new Error('原书保存失败，浏览器存储空间可能不足。'));});}finally{db.close();}}

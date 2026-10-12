@@ -6,3 +6,4 @@ dist/
 .openai/local/
 *.tsbuildinfo
 .sites-checkout/
+public/pdf-assets/
