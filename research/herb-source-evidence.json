@@ -1,0 +1,428 @@
+[
+  {
+    "name": "紫苏",
+    "chapter": "解表药",
+    "url": "https://zyxsyjxzx.hactcm.edu.cn/zyg/zycfl/jby/z__s.htm",
+    "checkedAt": "2026-10-12"
+  },
+  {
+    "name": "薄荷",
+    "chapter": "解表药",
+    "url": "https://zyxsyjxzx.hactcm.edu.cn/zyg/zycfl/jby/b__h.htm",
+    "checkedAt": "2026-10-12"
+  },
+  {
+    "name": "菊花",
+    "chapter": "解表药",
+    "url": "https://zyxsyjxzx.hactcm.edu.cn/zyg/zycfl/jby/j__h.htm",
+    "checkedAt": "2026-10-12"
+  },
+  {
+    "name": "葛根",
+    "chapter": "解表药",
+    "url": "https://zyxsyjxzx.hactcm.edu.cn/zyg/zycfl/jby/g__g.htm",
+    "checkedAt": "2026-10-12"
+  },
+  {
+    "name": "柴胡",
+    "chapter": "解表药",
+    "url": "https://zyxsyjxzx.hactcm.edu.cn/zyg/zycfl/jby/c__h.htm",
+    "checkedAt": "2026-10-12"
+  },
+  {
+    "name": "石膏",
+    "chapter": "清热药",
+    "url": "https://zyxsyjxzx.hactcm.edu.cn/zyg/zycfl/qry/s____g.htm",
+    "checkedAt": "2026-10-12"
+  },
+  {
+    "name": "知母",
+    "chapter": "清热药",
+    "url": "https://zyxsyjxzx.hactcm.edu.cn/zyg/zycfl/qry/z____m.htm",
+    "checkedAt": "2026-10-12"
+  },
+  {
+    "name": "栀子",
+    "chapter": "清热药",
+    "url": "https://zyxsyjxzx.hactcm.edu.cn/zyg/zycfl/qry/z____z.htm",
+    "checkedAt": "2026-10-12"
+  },
+  {
+    "name": "金银花",
+    "chapter": "清热药",
+    "url": "https://zyxsyjxzx.hactcm.edu.cn/zyg/zycfl/qry/j_y_h.htm",
+    "checkedAt": "2026-10-12"
+  },
+  {
+    "name": "连翘",
+    "chapter": "清热药",
+    "url": "https://zyxsyjxzx.hactcm.edu.cn/zyg/zycfl/qry/l____q.htm",
+    "checkedAt": "2026-10-12"
+  },
+  {
+    "name": "板蓝根",
+    "chapter": "清热药",
+    "url": "https://zyxsyjxzx.hactcm.edu.cn/zyg/zycfl/qry/b_l_g.htm",
+    "checkedAt": "2026-10-12"
+  },
+  {
+    "name": "鱼腥草",
+    "chapter": "清热药",
+    "url": "https://zyxsyjxzx.hactcm.edu.cn/zyg/zycfl/qry/y_x_c.htm",
+    "checkedAt": "2026-10-12"
+  },
+  {
+    "name": "牡丹皮",
+    "chapter": "清热药",
+    "url": "https://zyxsyjxzx.hactcm.edu.cn/zyg/zycfl/qry/m_d_p.htm",
+    "checkedAt": "2026-10-12"
+  },
+  {
+    "name": "青蒿",
+    "chapter": "清热药",
+    "url": "https://zyxsyjxzx.hactcm.edu.cn/zyg/zycfl/qry/q____h.htm",
+    "checkedAt": "2026-10-12"
+  },
+  {
+    "name": "干姜",
+    "chapter": "温里药",
+    "url": "https://zyxsyjxzx.hactcm.edu.cn/zyg/zycfl/wly/g__j.htm",
+    "checkedAt": "2026-10-12"
+  },
+  {
+    "name": "肉桂",
+    "chapter": "温里药",
+    "url": "https://zyxsyjxzx.hactcm.edu.cn/zyg/zycfl/wly/r__g.htm",
+    "checkedAt": "2026-10-12"
+  },
+  {
+    "name": "小茴香",
+    "chapter": "温里药",
+    "url": "https://zyxsyjxzx.hactcm.edu.cn/zyg/zycfl/wly/xhx.htm",
+    "checkedAt": "2026-10-12"
+  },
+  {
+    "name": "川芎",
+    "chapter": "活血化瘀药",
+    "url": "https://zyxsyjxzx.hactcm.edu.cn/zyg/zycfl/hxhyy/c__x.htm",
+    "checkedAt": "2026-10-12"
+  },
+  {
+    "name": "延胡索",
+    "chapter": "活血化瘀药",
+    "url": "https://zyxsyjxzx.hactcm.edu.cn/zyg/zycfl/hxhyy/yhs.htm",
+    "checkedAt": "2026-10-12"
+  },
+  {
+    "name": "丹参",
+    "chapter": "活血化瘀药",
+    "url": "https://zyxsyjxzx.hactcm.edu.cn/zyg/zycfl/hxhyy/d__c.htm",
+    "checkedAt": "2026-10-12"
+  },
+  {
+    "name": "桃仁",
+    "chapter": "活血化瘀药",
+    "url": "https://zyxsyjxzx.hactcm.edu.cn/zyg/zycfl/hxhyy/t__r.htm",
+    "checkedAt": "2026-10-12"
+  },
+  {
+    "name": "牛膝",
+    "chapter": "活血化瘀药",
+    "url": "https://zyxsyjxzx.hactcm.edu.cn/zyg/zycfl/hxhyy/n__x.htm",
+    "checkedAt": "2026-10-12"
+  },
+  {
+    "name": "红花",
+    "chapter": "活血化瘀药",
+    "url": "https://zyxsyjxzx.hactcm.edu.cn/zyg/zycfl/hxhyy/h__h.htm",
+    "checkedAt": "2026-10-12"
+  },
+  {
+    "name": "益母草",
+    "chapter": "活血化瘀药",
+    "url": "https://zyxsyjxzx.hactcm.edu.cn/zyg/zycfl/hxhyy/ymc.htm",
+    "checkedAt": "2026-10-12"
+  },
+  {
+    "name": "石决明",
+    "chapter": "平抑肝阳药",
+    "url": "https://zyxsyjxzx.hactcm.edu.cn/zyg/zycfl/pygyy/sjm.htm",
+    "checkedAt": "2026-10-12"
+  },
+  {
+    "name": "牡蛎",
+    "chapter": "平抑肝阳药",
+    "url": "https://zyxsyjxzx.hactcm.edu.cn/zyg/zycfl/pygyy/m__l.htm",
+    "checkedAt": "2026-10-12"
+  },
+  {
+    "name": "钩藤",
+    "chapter": "平肝息风药",
+    "url": "https://zyxsyjxzx.hactcm.edu.cn/zyg/zycfl/pgxfy/g__t.htm",
+    "checkedAt": "2026-10-12"
+  },
+  {
+    "name": "地龙",
+    "chapter": "平肝息风药",
+    "url": "https://zyxsyjxzx.hactcm.edu.cn/zyg/zycfl/pgxfy/d__l.htm",
+    "checkedAt": "2026-10-12"
+  },
+  {
+    "name": "天麻",
+    "chapter": "平肝息风药",
+    "url": "https://zyxsyjxzx.hactcm.edu.cn/zyg/zycfl/pgxfy/t__m.htm",
+    "checkedAt": "2026-10-12"
+  },
+  {
+    "name": "青皮",
+    "chapter": "理气药",
+    "url": "https://zyxsyjxzx.hactcm.edu.cn/zyg/zycfl/lqy/qp.htm",
+    "checkedAt": "2026-10-12"
+  },
+  {
+    "name": "枳实",
+    "chapter": "理气药",
+    "url": "https://zyxsyjxzx.hactcm.edu.cn/zyg/zycfl/lqy/zs.htm",
+    "checkedAt": "2026-10-12"
+  },
+  {
+    "name": "木香",
+    "chapter": "理气药",
+    "url": "https://zyxsyjxzx.hactcm.edu.cn/zyg/zycfl/lqy/mx.htm",
+    "checkedAt": "2026-10-12"
+  },
+  {
+    "name": "香附",
+    "chapter": "理气药",
+    "url": "https://zyxsyjxzx.hactcm.edu.cn/zyg/zycfl/lqy/xf.htm",
+    "checkedAt": "2026-10-12"
+  },
+  {
+    "name": "桔梗",
+    "chapter": "化痰止咳平喘药",
+    "url": "https://zyxsyjxzx.hactcm.edu.cn/zyg/zycfl/htzkpcy/j__g.htm",
+    "checkedAt": "2026-10-12"
+  },
+  {
+    "name": "川贝母",
+    "chapter": "化痰止咳平喘药",
+    "url": "https://zyxsyjxzx.hactcm.edu.cn/zyg/zycfl/htzkpcy/cbm.htm",
+    "checkedAt": "2026-10-12"
+  },
+  {
+    "name": "浙贝母",
+    "chapter": "化痰止咳平喘药",
+    "url": "https://zyxsyjxzx.hactcm.edu.cn/zyg/zycfl/htzkpcy/zbm.htm",
+    "checkedAt": "2026-10-12"
+  },
+  {
+    "name": "瓜蒌",
+    "chapter": "化痰止咳平喘药",
+    "url": "https://zyxsyjxzx.hactcm.edu.cn/zyg/zycfl/htzkpcy/g__l.htm",
+    "checkedAt": "2026-10-12"
+  },
+  {
+    "name": "苦杏仁",
+    "chapter": "化痰止咳平喘药",
+    "url": "https://zyxsyjxzx.hactcm.edu.cn/zyg/zycfl/htzkpcy/kxr.htm",
+    "checkedAt": "2026-10-12"
+  },
+  {
+    "name": "猪苓",
+    "chapter": "利水渗湿药",
+    "url": "https://zyxsyjxzx.hactcm.edu.cn/zyg/zycfl/lsssy/z__l.htm",
+    "checkedAt": "2026-10-12"
+  },
+  {
+    "name": "泽泻",
+    "chapter": "利水渗湿药",
+    "url": "https://zyxsyjxzx.hactcm.edu.cn/zyg/zycfl/lsssy/z__x.htm",
+    "checkedAt": "2026-10-12"
+  },
+  {
+    "name": "车前子",
+    "chapter": "利水渗湿药",
+    "url": "https://zyxsyjxzx.hactcm.edu.cn/zyg/zycfl/lsssy/cqz.htm",
+    "checkedAt": "2026-10-12"
+  },
+  {
+    "name": "茵陈蒿",
+    "chapter": "利水渗湿药",
+    "url": "https://zyxsyjxzx.hactcm.edu.cn/zyg/zycfl/lsssy/ych.htm",
+    "checkedAt": "2026-10-12"
+  },
+  {
+    "name": "金钱草",
+    "chapter": "利水渗湿药",
+    "url": "https://zyxsyjxzx.hactcm.edu.cn/zyg/zycfl/lsssy/jqc.htm",
+    "checkedAt": "2026-10-12"
+  },
+  {
+    "name": "独活",
+    "chapter": "祛风湿药",
+    "url": "https://zyxsyjxzx.hactcm.edu.cn/zyg/zycfl/qfsy/d______h.htm",
+    "checkedAt": "2026-10-12"
+  },
+  {
+    "name": "威灵仙",
+    "chapter": "祛风湿药",
+    "url": "https://zyxsyjxzx.hactcm.edu.cn/zyg/zycfl/qfsy/w__l__x.htm",
+    "checkedAt": "2026-10-12"
+  },
+  {
+    "name": "木瓜",
+    "chapter": "祛风湿药",
+    "url": "https://zyxsyjxzx.hactcm.edu.cn/zyg/zycfl/qfsy/m______g.htm",
+    "checkedAt": "2026-10-12"
+  },
+  {
+    "name": "苍术",
+    "chapter": "化湿药",
+    "url": "https://zyxsyjxzx.hactcm.edu.cn/zyg/zycfl/hsy/c__s.htm",
+    "checkedAt": "2026-10-12"
+  },
+  {
+    "name": "厚朴",
+    "chapter": "化湿药",
+    "url": "https://zyxsyjxzx.hactcm.edu.cn/zyg/zycfl/hsy/h__p.htm",
+    "checkedAt": "2026-10-12"
+  },
+  {
+    "name": "广藿香",
+    "chapter": "化湿药",
+    "url": "https://zyxsyjxzx.hactcm.edu.cn/zyg/zycfl/hsy/ghx.htm",
+    "checkedAt": "2026-10-12"
+  },
+  {
+    "name": "砂仁",
+    "chapter": "化湿药",
+    "url": "https://zyxsyjxzx.hactcm.edu.cn/zyg/zycfl/hsy/s__r.htm",
+    "checkedAt": "2026-10-12"
+  },
+  {
+    "name": "大黄",
+    "chapter": "泻下药",
+    "url": "https://zyxsyjxzx.hactcm.edu.cn/zyg/zycfl/xxy/d__h.htm",
+    "checkedAt": "2026-10-12"
+  },
+  {
+    "name": "芒硝",
+    "chapter": "泻下药",
+    "url": "https://zyxsyjxzx.hactcm.edu.cn/zyg/zycfl/xxy/m__x.htm",
+    "checkedAt": "2026-10-12"
+  },
+  {
+    "name": "人参",
+    "chapter": "补虚药",
+    "url": "https://zyxsyjxzx.hactcm.edu.cn/zyg/zycfl/bxy/r____c.htm",
+    "checkedAt": "2026-10-12"
+  },
+  {
+    "name": "党参",
+    "chapter": "补虚药",
+    "url": "https://zyxsyjxzx.hactcm.edu.cn/zyg/zycfl/bxy/d____c.htm",
+    "checkedAt": "2026-10-12"
+  },
+  {
+    "name": "山药",
+    "chapter": "补虚药",
+    "url": "https://zyxsyjxzx.hactcm.edu.cn/zyg/zycfl/bxy/s___y.htm",
+    "checkedAt": "2026-10-12"
+  },
+  {
+    "name": "西洋参",
+    "chapter": "补虚药",
+    "url": "https://zyxsyjxzx.hactcm.edu.cn/zyg/zycfl/bxy/x_y_c.htm",
+    "checkedAt": "2026-10-12"
+  },
+  {
+    "name": "黄芪",
+    "chapter": "补虚药",
+    "url": "https://zyxsyjxzx.hactcm.edu.cn/zyg/zycfl/bxy/h____q.htm",
+    "checkedAt": "2026-10-12"
+  },
+  {
+    "name": "杜仲",
+    "chapter": "补虚药",
+    "url": "https://zyxsyjxzx.hactcm.edu.cn/zyg/zycfl/bxy/d__z.htm",
+    "checkedAt": "2026-10-12"
+  },
+  {
+    "name": "熟地黄",
+    "chapter": "补虚药",
+    "url": "https://zyxsyjxzx.hactcm.edu.cn/zyg/zycfl/bxy/s_d_h.htm",
+    "checkedAt": "2026-10-12"
+  },
+  {
+    "name": "麦冬",
+    "chapter": "补虚药",
+    "url": "https://zyxsyjxzx.hactcm.edu.cn/zyg/zycfl/bxy/m____d.htm",
+    "checkedAt": "2026-10-12"
+  },
+  {
+    "name": "枸杞子",
+    "chapter": "补虚药",
+    "url": "https://zyxsyjxzx.hactcm.edu.cn/zyg/zycfl/bxy/g_q_z.htm",
+    "checkedAt": "2026-10-12"
+  },
+  {
+    "name": "酸枣仁",
+    "chapter": "安神药",
+    "url": "https://zyxsyjxzx.hactcm.edu.cn/zyg/zycfl/asy/szr.htm",
+    "checkedAt": "2026-10-12"
+  },
+  {
+    "name": "远志",
+    "chapter": "安神药",
+    "url": "https://zyxsyjxzx.hactcm.edu.cn/zyg/zycfl/asy/y__z.htm",
+    "checkedAt": "2026-10-12"
+  },
+  {
+    "name": "五味子",
+    "chapter": "收涩药",
+    "url": "https://zyxsyjxzx.hactcm.edu.cn/zyg/zycfl/ssy/wwz.htm",
+    "checkedAt": "2026-10-12"
+  },
+  {
+    "name": "山茱萸",
+    "chapter": "收涩药",
+    "url": "https://zyxsyjxzx.hactcm.edu.cn/zyg/zycfl/ssy/szy.htm",
+    "checkedAt": "2026-10-12"
+  },
+  {
+    "name": "三七",
+    "chapter": "止血药",
+    "url": "https://zyxsyjxzx.hactcm.edu.cn/zyg/zycfl/zxy/s__q.htm",
+    "checkedAt": "2026-10-12"
+  },
+  {
+    "name": "艾叶",
+    "chapter": "止血药",
+    "url": "https://zyxsyjxzx.hactcm.edu.cn/zyg/zycfl/zxy/a__y.htm",
+    "checkedAt": "2026-10-12"
+  },
+  {
+    "name": "山楂",
+    "chapter": "消食药",
+    "url": "https://zyxsyjxzx.hactcm.edu.cn/zyg/zycfl/xsy/s__z.htm",
+    "checkedAt": "2026-10-12"
+  },
+  {
+    "name": "麦芽",
+    "chapter": "消食药",
+    "url": "https://zyxsyjxzx.hactcm.edu.cn/zyg/zycfl/xsy/m__y.htm",
+    "checkedAt": "2026-10-12"
+  },
+  {
+    "name": "莱菔子",
+    "chapter": "消食药",
+    "url": "https://zyxsyjxzx.hactcm.edu.cn/zyg/zycfl/xsy/lfz.htm",
+    "checkedAt": "2026-10-12"
+  },
+  {
+    "name": "鸡内金",
+    "chapter": "消食药",
+    "url": "https://zyxsyjxzx.hactcm.edu.cn/zyg/zycfl/xsy/jnj.htm",
+    "checkedAt": "2026-10-12"
+  }
+]

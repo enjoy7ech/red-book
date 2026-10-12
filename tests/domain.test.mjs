@@ -16,7 +16,7 @@ test('最近一次答对移出错题本，再次答错重新进入',()=>{
  assert.deepEqual(latestMistakes([...attempts,{questionId:'q01',correct:false}]).sort(),['q01','q02']);
 });
 test('所有内置资料的关联、来源与答案有效',()=>{
- assert.equal(validateImport(existing,{knowledge:[],questions:[],sources:[]}).questions.length,56);
+ assert.equal(validateImport(existing,{knowledge:[],questions:[],sources:[]}).questions.length,questions.length);
  assert.equal(new Set(knowledge.map(k=>k.subject)).size,4);
  for(const k of knowledge) assert.ok(questions.some(q=>q.knowledgeId===k.id));
 });

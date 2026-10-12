@@ -10,7 +10,7 @@ export const drugSources:Source[]=[
  {id:'detail-guizhi',title:'桂枝 · 常用中药记录',publisher:'医砭',url:'https://yibian.hopto.org/db/?js=1&yno=227',kind:'药材参考',note:'桂枝的来源、性味归经与配伍；台湾中医资料，考试用语仍须与大陆教材核对。'},
  {id:'mahuang-process',title:'麻黄炮制品研究',publisher:'中国科学院长春应用化学研究所',url:'https://www.ciac.ac.cn/xwdt/kyjz/202011/t20201120_5759148.html',kind:'炮制差异',note:'生麻黄与蜜麻黄的发汗、平喘作用差异。'},
  {id:'mahuang-root',title:'麻黄根 · 专业药材词条',publisher:'中国医药信息查询平台',url:'https://www.dayi.org.cn/cmedical/302014.html',kind:'易混药材',note:'麻黄与麻黄根的部位、药性及发汗/止汗作用比较。'},
- {id:'runde',title:'润德教育 · 学习产品官方介绍',publisher:'润德教育',url:'https://www.rundejy.com/learning-products',kind:'红宝书资料入口',note:'教辅与学习产品介绍页；已查询，未发现可公开接入的 2026 红宝书完整电子版。本站尚未取得原书。'},
+ {id:'runde',title:'润德教育 · 学习产品官方介绍',publisher:'润德教育',url:'https://www.rundejy.com/learning-products',kind:'红宝书资料入口',note:'教辅与学习产品介绍页；已查询，未取得可核验的 2025 / 2026 红宝书完整电子版。本站尚未取得原书。'},
 ];
 export const drugProfiles:DrugProfile[]=[
  {knowledgeId:'k06',name:'麻黄',category:'解表药 / 发散风寒药',nature:'辛、微苦，温',channels:'肺、膀胱经',part:'麻黄科草麻黄、中麻黄或木贼麻黄的干燥草质茎',actions:['发汗散寒','宣肺平喘','利水消肿'],indications:[{action:'发汗散寒',condition:'风寒表实、无汗，兼头身疼痛；抓住“表实无汗”。'},{action:'宣肺平喘',condition:'风寒束肺、肺气不宣的喘咳；需辨实喘与虚喘。'},{action:'利水消肿',condition:'水肿兼有表证、小便不利；联系“风水”。'}],pairs:[{name:'麻黄 + 桂枝',meaning:'共同解表散寒，加强发汗；侧重风寒表实无汗。'},{name:'麻黄 + 石膏',meaning:'配伍清热药，学习肺热喘咳时寒温相配的思路。'}],processing:['生麻黄：辛散发汗作用较强。','蜜麻黄：发汗趋缓，平喘止咳作用更突出。'],caution:['表虚自汗、阴虚盗汗等不宜使用发汗力强的麻黄。','公开资料提示心悸、失眠等风险；处方使用须由专业人员判断。'],distinctions:['麻黄用草质茎，重在发汗；麻黄根用根和根茎，重在固表止汗。','麻黄侧重肺气与发汗；桂枝侧重温经与化气。'],sourceIds:['mahuang','mahuang-process','mahuang-root']},

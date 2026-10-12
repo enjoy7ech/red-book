@@ -1,4 +1,5 @@
 import { drugSources } from './drugs.ts';
+import { herbKnowledge, herbQuestions, herbSources } from './expandedHerbs.ts';
 export type SubjectId = 'zy1' | 'zy2' | 'zh' | 'fg';
 export interface Source { id: string; title: string; publisher: string; url: string; kind: string; note: string }
 export interface Knowledge { id: string; subject: SubjectId; chapter: string; title: string; summary: string; points: string[]; tip: string; tags: string[]; sourceId: string; minutes: number }
@@ -10,6 +11,9 @@ export const subjects = [
   { id: 'fg' as const, short: '药事法规', title: '药事管理与法规', desc: '药品管理 · 经营规范 · 执业要求', color: '#637c94', symbol: '肆' },
 ];
 export const sources: Source[] = [
+ ...herbSources,
+ {id:'runde-2025-faq',title:'润德 2025 课程与教材问答',publisher:'润德教育',url:'https://m.rundejy.com/zhibo/yaoshi/1085',kind:'原书检索记录',note:'2025 课程页面附教材获取问答，未提供完整红宝书 PDF；问答含旧模板内容，不据此推断当前销售政策。'},
+ {id:'runde-2020-sample',title:'润德中药一核心题库 1500 题（2020）',publisher:'高等教育出版社',url:'https://xuanshu.hep.com.cn/front/book/findBookDetails?bookId=5d73e4b9b0b2bda7c523bc48',kind:'旧版样章入口',note:'ISBN 978-7-04-052742-1，2020-07-13 出版，页面列样章入口；不是 2025 红宝书，题目未导入。'},
  ...drugSources,
  {id:'runde-practice',title:'润德执业药师 · 每日一练与题库入口',publisher:'润德教育',url:'https://www.rundejy.com/yaoshi/230',kind:'机构题库入口',note:'官网列有每日一练、章节精炼与题库，部分内容需使用润德 APP 或课程权限。这里只提供原始入口。'},
  {id:'public-exam-papers',title:'中药二 · 历年题与备考资料下载索引',publisher:'环球青藤 / 环球网校',url:'https://mjineng.hqqt.com/ziliao/class_zyys/5603/',kind:'机构整理真题',note:'页面提供机构整理的 2024、2025 年中药二题目及 2026 资料，可能要求登录；未导入本站，也不等同于官方发布试卷。'},
@@ -37,6 +41,7 @@ export const sources: Source[] = [
  {id:'chenpi',title:'陈皮的作用功效',publisher:'中国医药信息查询平台',url:'https://m.dayi.org.cn/qa/220692',kind:'药材知识',note:'陈皮理气健脾、燥湿化痰的知识依据。'},
 ];
 export const knowledge: Knowledge[] = [
+ ...herbKnowledge,
  {id:'k01',subject:'zy1',chapter:'药性理论',title:'四气：寒、热、温、凉',summary:'从药物作用认识寒热属性，把药性与证候联系起来。',points:['四气也称四性，概括寒、热、温、凉四种性质。','寒凉药侧重清热；温热药侧重散寒。','辨证学习时，将寒热药性与寒热证候对应。'],tip:'先辨寒热，再联系功效；温与热、凉与寒体现程度差别。',tags:['基础理论','四气'],sourceId:'nature',minutes:4},
  {id:'k02',subject:'zy1',chapter:'药性理论',title:'五味：从药味记作用',summary:'辛散行、甘补缓、苦泄燥、酸收涩、咸软下。',points:['辛偏发散与行气活血；甘偏补益、和中、缓急。','苦偏清泄、燥湿与降泄；酸偏收敛固涩。','咸偏软坚散结与泻下；淡味另有渗湿利尿特点。'],tip:'用作用关键词串联药味，避免只凭实际口感判断药性。',tags:['基础理论','五味','记忆'],sourceId:'nature',minutes:5},
  {id:'k03',subject:'zy1',chapter:'药性理论',title:'升降浮沉：作用的方向',summary:'用“向上向外、向下向内”理解药物作用趋势。',points:['升浮常联系升阳、发表等作用。','沉降常联系泻下、利尿、降逆等作用。','辨析题可先判断功效方向，再分析具体药物。'],tip:'这是作用趋向的概括，不能用药物重量机械判断。',tags:['药性','升降浮沉'],sourceId:'nature',minutes:4},
@@ -67,6 +72,7 @@ const q = (id: string, k: string, title: string, options: string[], answer: numb
  return {id,knowledgeId:k,subject:note.subject,type:answer.length>1?'multiple':'single',title,options,answer,explanation,sourceId:note.sourceId,origin:'原创练习'};
 };
 export const questions: Question[] = [
+ ...herbQuestions,
  q('q01','k01','中药“四气”所指的是哪一组药性？',['酸、苦、甘、辛','寒、热、温、凉','升、降、浮、沉','补、泻、和、散'],[1],'四气是寒、热、温、凉；不要与五味、升降浮沉混记。'),
  q('q02','k01','学习寒凉药时，优先联系哪类作用？',['温中散寒','补火助阳','清热泻火','发汗散寒'],[2],'寒凉药的学习线索是清热，温热药则侧重散寒。'),
  q('q03','k02','具有收敛固涩作用特点的药味是？',['辛','甘','酸','咸'],[2],'酸味与收敛固涩相联系，辛偏散行、甘偏补缓、咸偏软下。'),
