@@ -92,9 +92,9 @@ B 站课程及生成目录已移除。视频课堂通过本机 OpenList 按四�
 
 使用小米中国区 Token Plan 的 OpenAI 兼容接口。默认模型为 mimo-v2.6-flash；ASR 使用 mimo-v2.5-asr，TTS 使用 mimo-v2.5-tts。支持中文录音识别、分段朗读、音色选择、连续语音轮流对话；连续语音在说话结束后自动识别、提问、朗读并继续录音，关闭面板或关闭连续语音即停止采集。单次采集上限 90 秒。视频片段转写需要原视频可播放且浏览器支持 captureStream 音轨捕获，最多采集 90 秒后通过 ASR 转写并总结，不把视频标题视为字幕。
 
-网站已迁移为 React SPA + Cloudflare Worker，产物为 dist/client 和 dist/server/index.js。Sites 继续使用原项目及私有访问。MIMO_API_KEY 通过 Sites 运行环境密文设置；其余环境变量为 MIMO_BASE_URL、MIMO_CHAT_MODEL、MIMO_ASR_MODEL、MIMO_TTS_MODEL，均不使用 VITE_ 前缀。密钥不进入浏览器、Git 或部署源码配置。
+网站为纯静态 React SPA，npm run build 输出 dist/index.html 和静态资源，可直接交给 Nginx。AI 在浏览器中直接调用小米 MiMo 的 OpenAI 兼容接口，不需要 AI 后端、Worker 或代理服务。
 
-本地运行 npm run dev 会同时启动网站和小米 API 转发服务；已运行的转发服务会继续复用，也可单独运行 npm run ai:gateway。本地密钥放在 Git 忽略的 .openai/local/ai-config.json，由 scripts/configure-ai-local.mjs 通过隐藏标准输入写入。视频中转服务仍独立运行。使用本机默认浏览器允许麦克风，并通过 HTTPS 或 localhost 访问。助手在调用时把选取的文字或插图、问题、语音发送至小米；录音不在服务器长期保存，聊天记录在当前浏览器保存，可复制重要回复。
+本地运行 npm run dev 只启动网站。src/mimo-config.json 配置 API key、Base URL 和模型；按用户选择，key 会进入静态资源并对访问者可见。文本、插图与录音由浏览器直接发送到小米，聊天记录保存在当前浏览器。视频中转继续使用原有服务。麦克风需要 HTTPS 或 localhost。
 
 ## 讲义原创练习
 

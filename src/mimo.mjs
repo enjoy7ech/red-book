@@ -23,19 +23,13 @@ export function recognitionPayload(data,model){
  if(!data||typeof data.audio!=='string'||data.audio.length>8000000||!/^data:audio\/(wav|mpeg|mp3);base64,[A-Za-z0-9+/=]+$/.test(data.audio))throw new Error('请提供 6MB 以内的 WAV 或 MP3 录音。');
  return {model,messages:[{role:'user',content:[{type:'input_audio',input_audio:{data:data.audio,format:data.audio.startsWith('data:audio/wav')?'wav':'mp3'}}]}],asr_options:{language:'auto'}};
 }
-export async function handleAI(request,env,fetcher=fetch){
- const path=new URL(request.url).pathname;
- if(!path.startsWith('/api/ai/'))return null;
- const origin=request.headers.get('origin');if(origin&&origin!==new URL(request.url).origin)return json({error:'请从本站发起请求。'},403);
- if(path==='/api/ai/status'&&request.method==='GET')return json({configured:!!env.MIMO_API_KEY,model:env.MIMO_CHAT_MODEL||'mimo-v2.6-flash',tts:env.MIMO_TTS_MODEL||'mimo-v2.5-tts',asr:env.MIMO_ASR_MODEL||'mimo-v2.5-asr'});
- if(request.method!=='POST')return json({error:'请求方法不支持。'},405);
- if(!['/api/ai/chat','/api/ai/tts','/api/ai/asr'].includes(path))return json({error:'接口不存在。'},404);
- if(!env.MIMO_API_KEY)return json({error:'AI 服务尚未配置密钥。'},503);
- if(Number(request.headers.get('content-length'))>8500000)return json({error:'请求内容过大。'},413);
+export async function callMiMo(operation,data,env,signal,fetcher=fetch){
+ const path='/'+operation;
+ if(!env.MIMO_API_KEY)return json({error:'请配置小米 API key。'},503);
  let payload;
- try{const body=await request.text();if(body.length>8500000)return json({error:'请求内容过大。'},413);const data=JSON.parse(body);payload=path.endsWith('/chat')?chatPayload(data,env.MIMO_CHAT_MODEL||'mimo-v2.6-flash'):path.endsWith('/tts')?speechPayload(data,env.MIMO_TTS_MODEL||'mimo-v2.5-tts'):recognitionPayload(data,env.MIMO_ASR_MODEL||'mimo-v2.5-asr');}catch(error){return json({error:error instanceof SyntaxError?'请求格式无效。':error.message},400);}
+ try{payload=path.endsWith('/chat')?chatPayload(data,env.MIMO_CHAT_MODEL||'mimo-v2.6-flash'):path.endsWith('/tts')?speechPayload(data,env.MIMO_TTS_MODEL||'mimo-v2.5-tts'):recognitionPayload(data,env.MIMO_ASR_MODEL||'mimo-v2.5-asr');}catch(error){return json({error:error instanceof SyntaxError?'请求格式无效。':error.message},400);}
  try{
-  const upstream=await fetcher(`${env.MIMO_BASE_URL||'https://token-plan-cn.xiaomimimo.com/v1'}/chat/completions`,{method:'POST',headers:{'api-key':env.MIMO_API_KEY,'Content-Type':'application/json'},body:JSON.stringify(payload),signal:AbortSignal.any([request.signal,AbortSignal.timeout(90000)])});
+  const upstream=await fetcher(`${env.MIMO_BASE_URL||'https://token-plan-cn.xiaomimimo.com/v1'}/chat/completions`,{method:'POST',headers:{'api-key':env.MIMO_API_KEY,'Content-Type':'application/json'},body:JSON.stringify(payload),signal:AbortSignal.any([signal||new AbortController().signal,AbortSignal.timeout(90000)])});
   if(!upstream.ok){await upstream.body?.cancel();const error=upstream.status===401||upstream.status===403?'小米接口鉴权失败，请检查密钥与套餐状态。':upstream.status===429?'小米接口额度或调用频率受限，请稍后再试。':`小米接口暂不可用（${upstream.status}），请稍后重试。`;return json({error},upstream.status===429?429:502);}
   if(path.endsWith('/chat'))return new Response(contentStream(upstream.body),{headers:{'Content-Type':'text/event-stream; charset=utf-8','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'}});
   const result=await upstream.json();const message=result.choices?.[0]?.message;

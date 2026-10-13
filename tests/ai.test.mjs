@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { chatPayload, recognitionPayload, speechPayload, handleAI } from '../worker/ai.mjs';
+import { chatPayload, recognitionPayload, speechPayload, callMiMo } from '../src/mimo.mjs';
 import { buildAIContext, retrievePassages } from '../src/aiContext.ts';
 import { encodeWav, splitSpeech } from '../src/aiAudio.ts';
 
@@ -11,14 +11,14 @@ test('用户和教材不能注入系统角色或重定向上游模型',()=>{
  assert.throws(()=>recognitionPayload({audio:'https://example.com/audio.wav'},'m'),/录音/);
  assert.equal(speechPayload({text:'你好',voice:'unknown'},'tts').audio.voice,'mimo_default');
 });
-test('同源 API 隔离密钥，流式回复及语音输出可用',async()=>{
+test('浏览器直连小米接口，流式回复及语音输出可用',async()=>{
  const env={MIMO_API_KEY:'test-secret'};let sent;
  const request=new Request('https://study.test/api/ai/chat',{method:'POST',headers:{Origin:'https://study.test'},body:JSON.stringify({question:'总结',context:'教材'})});
- const response=await handleAI(request,env,async(url,init)=>{sent={url,init};return new Response('data: {"choices":[{"delta":{"content":"总结"}}]}\n\n');});
+ const response=await callMiMo('chat',{question:'总结',context:'教材'},env,request.signal,async(url,init)=>{sent={url,init};return new Response('data: {"choices":[{"delta":{"content":"总结"}}]}\n\n');});
  assert.equal(response.headers.get('content-type'),'text/event-stream; charset=utf-8');assert.equal(sent.init.headers['api-key'],'test-secret');assert.ok(!(await response.text()).includes('test-secret'));
- const rejected=await handleAI(new Request('https://study.test/api/ai/chat',{method:'POST',headers:{Origin:'https://evil.test'}}),env,()=>{throw new Error('must not call upstream');});assert.equal(rejected.status,403);
- const unavailable=await handleAI(new Request('https://study.test/api/ai/chat',{method:'POST',body:'{}'}),{},()=>{});assert.equal(unavailable.status,503);
- const error=await handleAI(new Request('https://study.test/api/ai/tts',{method:'POST',body:JSON.stringify({text:'你好'})}),env,async()=>new Response(JSON.stringify({error:{message:'test-secret'}}),{status:401}));assert.ok(!(await error.text()).includes('test-secret'));
+ assert.equal(sent.url,'https://token-plan-cn.xiaomimimo.com/v1/chat/completions');
+ const unavailable=await callMiMo('chat',{},{});assert.equal(unavailable.status,503);
+ const error=await callMiMo('tts',{text:'你好'},env,undefined,async()=>new Response(JSON.stringify({error:{message:'test-secret'}}),{status:401}));assert.ok(!(await error.text()).includes('test-secret'));
 });
 test('范围选择提供整章原文，检索支持跨科资料且保留来源',()=>{
  const chapter=buildAIContext('book:zy2-02','总结','','');assert.ok(chapter.text.includes('麻黄'));assert.equal(chapter.sources[0].chapterId,'zy2-02');
