@@ -18,11 +18,13 @@ export function courseForSubject(config, subject) {
   if (!course || !['zy1', 'zy2', 'zh', 'fg'].includes(subject) || !course.path.startsWith('/') || course.path.split('/').some(p => p === '..' || p === '.') || course.path.includes('\\')) throw new Error('Invalid subject');
   return course;
 }
-export async function startCloudVideoServer(runtimeDir) {
+export async function startCloudVideoServer(runtimeDir, { port = 5245 } = {}) {
   const config = JSON.parse(await readFile(path.join(runtimeDir, 'site-video-config.json'), 'utf8'));
-  const source = 'http://127.0.0.1:5244';
-  if (config.source !== source || !config.root.startsWith('/quark-video/') || config.root.includes('/../')) throw new Error('Invalid local video configuration');
+  const source = config.source;
+  const sourceUrl = new URL(source);
+  if ((!config.server && source !== 'http://127.0.0.1:5244') || !['http:', 'https:'].includes(sourceUrl.protocol) || sourceUrl.username || sourceUrl.password || sourceUrl.search || sourceUrl.hash || sourceUrl.pathname !== '/' || !config.root.startsWith('/quark-video/') || config.root.split('/').some(p => p === '..' || p === '.')) throw new Error('Invalid video configuration');
   const root = config.root.replace(/\/$/, '');
+  const apiPath = course => config.server ? `${root}${course.path}` : course.path;
   let token;
   async function api(endpoint, body, retried = false) {
     if (!token) {
@@ -45,7 +47,7 @@ export async function startCloudVideoServer(runtimeDir) {
     if (cached && Date.now() - cached.time < 60000) return cached.data;
     const files = [];
     for (let page = 1; page <= 20; page++) {
-      const data = await api('/api/fs/list', { path: course.path, password: '', page, per_page: 200, refresh: false });
+      const data = await api('/api/fs/list', { path: apiPath(course), password: '', page, per_page: 200, refresh: false });
       files.push(...(data.content || []));
       if (!data.content?.length || files.length >= data.total) break;
     }
@@ -56,7 +58,7 @@ export async function startCloudVideoServer(runtimeDir) {
   }
   const server = http.createServer(async (req, res) => {
     const json = (status, value) => { res.writeHead(status, { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store' }); res.end(JSON.stringify(value)); };
-    const origins = new Set(['http://127.0.0.1:5173', 'http://localhost:5173', 'http://127.0.0.1:5245']);
+    const origins = new Set(['http://127.0.0.1:5173', 'http://localhost:5173', 'http://127.0.0.1:5245', ...(config.allowedOrigins || [])]);
     if (!['127.0.0.1:5245', 'localhost:5245'].includes(req.headers.host) || (req.headers.origin && !origins.has(req.headers.origin))) return json(403, { error: 'Forbidden' });
     const url = new URL(req.url, 'http://127.0.0.1:5245');
     if (req.method !== 'GET') return json(405, { error: 'Method not allowed' });
@@ -70,7 +72,7 @@ export async function startCloudVideoServer(runtimeDir) {
       try { name = videoNameFromId(url.searchParams.get('id')); } catch { return json(400, { error: 'Invalid video' }); }
       if (!(await catalog(subject)).lessons.some(l => l.name === name)) return json(404, { error: 'Video not found' });
       if (req.headers.range && !/^bytes=\d*-\d*$/.test(req.headers.range)) return json(416, { error: 'Invalid range' });
-      const file = await api('/api/fs/get', { path: `${course.path}/${name}`, password: '' });
+      const file = await api('/api/fs/get', { path: `${apiPath(course)}/${name}`, password: '' });
       const abort = new AbortController(); res.once('close', () => abort.abort());
       const headers = req.headers.range ? { Range: req.headers.range } : {};
       const upstream = await fetch(proxyVideoUrl(source, `${root}${course.path}`, name, file.sign), { headers, redirect: 'error', signal: abort.signal });
@@ -82,8 +84,9 @@ export async function startCloudVideoServer(runtimeDir) {
       const stream = Readable.fromWeb(upstream.body); stream.on('error', () => res.destroy()); stream.pipe(res);
     } catch { if (!res.headersSent && !res.destroyed) json(502, { error: '课程网盘暂时无法读取，请检查本机 OpenList 的登录状态。' }); else res.destroy(); }
   });
-  await new Promise((resolve, reject) => { server.once('error', reject); server.listen(5245, '127.0.0.1', resolve); });
-  console.log('Course video gateway: http://127.0.0.1:5245 (local only)'); return server;
+  const bind = config.server ? '0.0.0.0' : '127.0.0.1';
+  await new Promise((resolve, reject) => { server.once('error', reject); server.listen(port, bind, resolve); });
+  console.log(`Course video gateway: ${bind}:${server.address().port}`); return server;
 }
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
   const runtimeDir = process.env.RED_BOOK_VIDEO_RUNTIME || path.join(process.env.LOCALAPPDATA || '', 'red-book-services', 'openlist');
