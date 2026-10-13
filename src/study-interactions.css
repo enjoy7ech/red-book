@@ -1,0 +1,20 @@
+.route-back{padding:0 8px!important;color:#8c564b!important;flex-shrink:0}
+.study-dialog{max-width:calc(100vw - 32px);top:28px;padding-bottom:28px}
+.study-dialog .ant-modal-body{max-height:calc(100dvh - 160px);overflow:auto;overscroll-behavior:contain;padding:4px 2px 12px}
+.study-dialog .question-panel{padding:24px;border:0;box-shadow:none;margin:0}
+.study-dialog .question-panel h2{font-size:21px;line-height:1.7}
+.study-dialog .answer-options button{font-size:15px;line-height:1.8}
+.study-dialog .explanation p{font-size:15px;line-height:1.85}
+.study-dialog .result-panel{padding:32px 20px;border:0}
+.study-dialog .question-actions{position:sticky;bottom:-12px;padding:14px 0;background:#fffefa;border-top:1px solid #eee4d9;margin-top:20px}
+.study-dialog .page-heading{margin-top:8px}
+.study-dialog .lecture-toc{position:static}
+.lecture-study-tools{display:flex;align-items:center;flex-wrap:wrap;gap:10px;margin:0 0 18px;padding:12px 14px;background:#f6f3eb;border-radius:8px}
+.lecture-study-tools>span{font-size:12px;color:#8b8274;margin-left:auto}
+.question-evidence{margin:16px 0;border-top:1px solid #deddd0;padding-top:12px}
+.question-evidence summary{cursor:pointer;font-weight:600;font-size:13px;color:#6b765a}
+.question-evidence blockquote{margin:12px 0;padding:10px 14px;border-left:3px solid #a9b297;background:#faf9f3;font-size:14px;line-height:1.85;white-space:pre-wrap}
+.question-evidence small{font-size:11px;line-height:1.8;color:#8a8477}
+.source-button{border:0;background:none;cursor:pointer;text-align:left;line-height:1.8;padding:6px 0;font-size:13px!important}
+@media(max-width:650px){.lecture-study-tools{gap:8px;padding:10px}.lecture-study-tools .ant-btn{font-size:13px}.lecture-study-tools>span{width:100%;margin-left:0;font-size:11px}}
+@media(max-width:650px){.study-dialog{max-width:calc(100vw - 16px);top:8px;padding-bottom:8px}.study-dialog .ant-modal-content{padding:18px 14px}.study-dialog .ant-modal-body{max-height:calc(100dvh - 100px)}.study-dialog .question-panel{padding:8px 0}.study-dialog .question-panel h2{font-size:18px}.study-dialog .answer-options button{font-size:14px}.route-back{font-size:12px}.study-dialog .result-stats{gap:20px}}

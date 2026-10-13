@@ -8,3 +8,8 @@ dist/
 .sites-checkout/
 public/pdf-assets/
 data/
+
+.dev.vars*
+.env*
+!.env.example
+.wrangler/

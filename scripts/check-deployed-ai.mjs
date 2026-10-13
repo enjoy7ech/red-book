@@ -1,0 +1,5 @@
+console.log('Ready for Site service access on stdin (input is hidden).');
+if(process.stdin.isTTY)process.stdin.setRawMode(true);process.stdin.resume();let input='';
+process.stdin.on('data',async chunk=>{input+=chunk;if(!/[\r\n]/.test(input))return;process.stdin.pause();if(process.stdin.isTTY)process.stdin.setRawMode(false);const {origin,token}=JSON.parse(input);const headers={'OAI-Sites-Authorization':'Bearer '+token};
+ const status=await fetch(origin+'/api/ai/status',{headers,redirect:'error'});console.log(JSON.stringify({status:status.status,configuration:await status.json()}));
+ const r=await fetch(origin+'/api/ai/chat',{method:'POST',redirect:'error',headers:{...headers,'Content-Type':'application/json'},body:JSON.stringify({question:'请只回复：正式网站 AI 服务正常。',context:'验证网站服务'})});const raw=await r.text();let answer='';for(const line of raw.split('\n'))if(line.startsWith('data:')){try{answer+=JSON.parse(line.slice(5)).choices?.[0]?.delta?.content||'';}catch{}}console.log(JSON.stringify({chat:r.status,answer:answer||raw.slice(0,100)}));process.exit();});

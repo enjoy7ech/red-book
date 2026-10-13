@@ -1,10 +1,11 @@
 import { drugSources } from './drugs.ts';
 import { herbKnowledge, herbQuestions, herbSources } from './expandedHerbs.ts';
 import { pastKnowledge, pastQuestions, pastSources } from './pastData.ts';
+import { textbookPracticeKnowledge, textbookPracticeQuestions, textbookPracticeSources } from './textbookPractice.ts';
 export type SubjectId = 'zy1' | 'zy2' | 'zh' | 'fg';
-export interface Source { id: string; title: string; publisher: string; url: string; kind: string; note: string }
+export interface Source { id: string; title: string; publisher: string; url: string; kind: string; note: string; chapterId?:string; sectionId?:string }
 export interface Knowledge { id: string; subject: SubjectId; chapter: string; title: string; summary: string; points: string[]; tip: string; tags: string[]; sourceId: string; minutes: number }
-export interface Question { id: string; subject: SubjectId; knowledgeId: string; type: 'single' | 'multiple'; title: string; options: string[]; answer: number[]; explanation: string; sourceId: string; origin: string; year?:number; paperId?:string; sourceRef?:string }
+export interface Question { id: string; subject: SubjectId; knowledgeId: string; type: 'single' | 'multiple'; title: string; options: string[]; answer: number[]; explanation: string; sourceId: string; origin: string; year?:number; paperId?:string; sourceRef?:string; practiceKind?:'textbook'; chapterId?:string; sectionId?:string; difficulty?:string; evidence?:{blockIndex:number;quote:string}[]; pastQuestionIds?:string[] }
 export const subjects = [
   { id: 'zy1' as const, short: '中药一', title: '中药学专业知识（一）', desc: '药性理论 · 中药炮制 · 药材鉴别', color: '#a53f35', symbol: '壹' },
   { id: 'zy2' as const, short: '中药二', title: '中药学专业知识（二）', desc: '单味中药 · 功效辨析 · 配伍应用', color: '#587660', symbol: '贰' },
@@ -12,6 +13,7 @@ export const subjects = [
   { id: 'fg' as const, short: '药事法规', title: '药事管理与法规', desc: '药品管理 · 经营规范 · 执业要求', color: '#637c94', symbol: '肆' },
 ];
 export const sources: Source[] = [
+ ...textbookPracticeSources,
  ...pastSources,
  ...herbSources,
  {id:'runde-2025-faq',title:'润德 2025 课程与教材问答',publisher:'润德教育',url:'https://m.rundejy.com/zhibo/yaoshi/1085',kind:'原书检索记录',note:'2025 课程页面附教材获取问答，未提供完整红宝书 PDF；问答含旧模板内容，不据此推断当前销售政策。'},
@@ -43,6 +45,7 @@ export const sources: Source[] = [
  {id:'chenpi',title:'陈皮的作用功效',publisher:'中国医药信息查询平台',url:'https://m.dayi.org.cn/qa/220692',kind:'药材知识',note:'陈皮理气健脾、燥湿化痰的知识依据。'},
 ];
 export const knowledge: Knowledge[] = [
+ ...textbookPracticeKnowledge,
  ...pastKnowledge,
  ...herbKnowledge,
  {id:'k01',subject:'zy1',chapter:'药性理论',title:'四气：寒、热、温、凉',summary:'从药物作用认识寒热属性，把药性与证候联系起来。',points:['四气也称四性，概括寒、热、温、凉四种性质。','寒凉药侧重清热；温热药侧重散寒。','辨证学习时，将寒热药性与寒热证候对应。'],tip:'先辨寒热，再联系功效；温与热、凉与寒体现程度差别。',tags:['基础理论','四气'],sourceId:'nature',minutes:4},
@@ -75,6 +78,7 @@ const q = (id: string, k: string, title: string, options: string[], answer: numb
  return {id,knowledgeId:k,subject:note.subject,type:answer.length>1?'multiple':'single',title,options,answer,explanation,sourceId:note.sourceId,origin:'原创练习'};
 };
 export const questions: Question[] = [
+ ...textbookPracticeQuestions,
  ...pastQuestions,
  ...herbQuestions,
  q('q01','k01','中药“四气”所指的是哪一组药性？',['酸、苦、甘、辛','寒、热、温、凉','升、降、浮、沉','补、泻、和、散'],[1],'四气是寒、热、温、凉；不要与五味、升降浮沉混记。'),

@@ -1,0 +1,7 @@
+.exam-mobile-link{display:none;border:0;background:none;color:#667b56;font:inherit;cursor:pointer;padding:4px 0;align-items:center;gap:6px}
+.exam-miniprogram>.anticon{display:block;font-size:36px;color:#5c845a;margin:14px 0}
+.exam-miniprogram p{font-size:14px;line-height:1.85;color:#655f53}
+.exam-miniprogram .ant-input{font-size:16px;line-height:1.8;background:#f7f5ef;padding:12px;overflow-wrap:anywhere}
+.exam-miniprogram>.ant-btn{margin:18px 0 12px}
+.exam-miniprogram small{display:block;font-size:12px;line-height:1.8;color:#958d7e}
+@media(max-width:760px){.exam-desktop-link{display:none!important}.exam-mobile-link{display:inline-flex;font-size:13px}}
