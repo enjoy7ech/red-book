@@ -27,13 +27,23 @@ test('服务器中转使用完整课程路径并保留视频 Range，同时拒�
   });
   await new Promise(resolve => upstream.listen(0, '127.0.0.1', resolve));
   const directory = await mkdtemp(path.join(os.tmpdir(), 'red-book-video-test-'));
+  const previousSource = process.env.OPENLIST_URL;
+  const previousUsername = process.env.OPENLIST_USERNAME;
+  const previousPassword = process.env.OPENLIST_PASSWORD;
+  process.env.OPENLIST_URL = `http://127.0.0.1:${upstream.address().port}`;
+  process.env.OPENLIST_USERNAME = 'reader';
+  process.env.OPENLIST_PASSWORD = 'test-password';
+  t.after(() => { if (previousSource === undefined) delete process.env.OPENLIST_URL; else process.env.OPENLIST_URL = previousSource; });
+  t.after(() => {
+    if (previousUsername === undefined) delete process.env.OPENLIST_USERNAME; else process.env.OPENLIST_USERNAME = previousUsername;
+    if (previousPassword === undefined) delete process.env.OPENLIST_PASSWORD; else process.env.OPENLIST_PASSWORD = previousPassword;
+  });
   t.after(async () => { upstream.closeAllConnections(); await new Promise(resolve => upstream.close(resolve)); await rm(directory, {recursive:true, force:true}); });
   await writeFile(path.join(directory, 'site-video-config.json'), JSON.stringify({
-    server: true, source: `http://127.0.0.1:${upstream.address().port}`, root,
+    server: true, source: 'http://host.docker.internal:5244', root,
     allowedOrigins: ['https://lovehuanhuan.dongzx.site'],
     courses: [{id:'zy1', title:'中药一', path:'/基础学习', count:1}]
   }));
-  await writeFile(path.join(directory, 'webdav-account.json'), JSON.stringify({username:'reader',password:'test-password'}));
   const gateway = await startCloudVideoServer(directory, {port:0});
   t.after(async () => { gateway.closeAllConnections(); await new Promise(resolve => gateway.close(resolve)); });
   const url = `http://127.0.0.1:${gateway.address().port}`;
@@ -51,6 +61,7 @@ test('服务器中转使用完整课程路径并保留视频 Range，同时拒�
   assert.equal(response.status,200);
   const catalog = await response.json();
   assert.equal(catalog.lessons[0].name,name);
+  assert.deepEqual(calls.find(call=>call.url==='/api/auth/login').payload,{username:'reader',password:'test-password'});
   assert.equal(calls.find(call=>call.url==='/api/fs/list').payload.path,`${root}/基础学习`);
   const stream = await fetch(`${url}/api/cloud-video/stream?subject=zy1&id=${catalog.lessons[0].id}`, {headers:{...headers,Range:'bytes=0-3'}});
   assert.equal(stream.status,206);

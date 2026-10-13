@@ -1,0 +1,8 @@
+*
+!Dockerfile.video
+!scripts/
+scripts/*
+!scripts/cloud-video-server.mjs
+!deploy/
+deploy/*
+!deploy/site-video-config.json

@@ -20,7 +20,7 @@ export function courseForSubject(config, subject) {
 }
 export async function startCloudVideoServer(runtimeDir, { port = 5245 } = {}) {
   const config = JSON.parse(await readFile(path.join(runtimeDir, 'site-video-config.json'), 'utf8'));
-  const source = config.source;
+  const source = config.server ? (process.env.OPENLIST_URL || config.source) : config.source;
   const sourceUrl = new URL(source);
   if ((!config.server && source !== 'http://127.0.0.1:5244') || !['http:', 'https:'].includes(sourceUrl.protocol) || sourceUrl.username || sourceUrl.password || sourceUrl.search || sourceUrl.hash || sourceUrl.pathname !== '/' || !config.root.startsWith('/quark-video/') || config.root.split('/').some(p => p === '..' || p === '.')) throw new Error('Invalid video configuration');
   const root = config.root.replace(/\/$/, '');
@@ -28,7 +28,10 @@ export async function startCloudVideoServer(runtimeDir, { port = 5245 } = {}) {
   let token;
   async function api(endpoint, body, retried = false) {
     if (!token) {
-      const account = JSON.parse(await readFile(path.join(runtimeDir, 'webdav-account.json'), 'utf8'));
+      const account = config.server && process.env.OPENLIST_USERNAME
+        ? { username: process.env.OPENLIST_USERNAME, password: process.env.OPENLIST_PASSWORD }
+        : JSON.parse(await readFile(path.join(runtimeDir, 'webdav-account.json'), 'utf8'));
+      if (!account.username || !account.password) throw new Error('OpenList credentials missing');
       const login = await fetch(`${source}/api/auth/login`, { method: 'POST', redirect: 'error', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ username: account.username, password: account.password }), signal: AbortSignal.timeout(10000) });
       const result = await login.json();
       if (result.code !== 200) throw new Error('Local course login unavailable');

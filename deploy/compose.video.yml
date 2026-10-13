@@ -1,0 +1,26 @@
+name: red-book-video
+
+services:
+  video-gateway:
+    image: enjoytech/red-book-video-gateway:1.0.0
+    container_name: video-gateway
+    init: true
+    restart: unless-stopped
+    environment:
+      OPENLIST_URL: http://host.docker.internal:5244
+      OPENLIST_USERNAME: ${OPENLIST_USERNAME:?Set OPENLIST_USERNAME}
+      OPENLIST_PASSWORD: ${OPENLIST_PASSWORD:?Set OPENLIST_PASSWORD}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    networks:
+      - nginx_existing
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+networks:
+  nginx_existing:
+    external: true
+    name: ${NGINX_NETWORK:?Set NGINX_NETWORK to an existing network of nginx}
