@@ -2,6 +2,6 @@ import CloudVideoLibrary from './CloudVideoLibrary';
 import type { SubjectId } from './data';
 import './videos.css';
 
-export default function VideoLibrary({ initialSubject = 'all' }: { initialSubject?: SubjectId | 'all' }) {
-  return <CloudVideoLibrary initialSubject={initialSubject} />;
+export default function VideoLibrary(props: {initialSubject?: SubjectId | 'all'; visible: boolean; requestedSubject?: SubjectId | null; onRequestHandled: () => void}) {
+  return <CloudVideoLibrary {...props} />;
 }
